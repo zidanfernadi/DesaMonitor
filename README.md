@@ -3,9 +3,6 @@
 Sistem Informasi Geografis untuk pemantauan dan pelaporan kondisi infrastruktur desa.
 Proyek akhir mata kuliah Pemrograman Berorientasi Objek (PBO) - Ilmu Komputer, Universitas Lampung.
 
-## Cara menjalankan
-Jalankan class `com.mycompany.desamonitor.Main` (aplikasi konsol, input memakai Scanner).
-
 Akun admin contoh: `admin` / `admin123` dan `petugas` / `petugas123`.
 
 ## Fitur
