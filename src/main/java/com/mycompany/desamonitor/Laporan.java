@@ -1,0 +1,131 @@
+package com.mycompany.desamonitor;
+
+public class Laporan {
+
+    public static final String MENUNGGU = "Menunggu pemeriksaan";
+    public static final String DITANGANI = "Sedang ditangani";
+    public static final String SELESAI = "Selesai";
+    public static final String DITOLAK = "Ditolak";
+
+    public static final String[] JENIS = {
+        "Jalan", "Lampu Jalan", "Jembatan", "Drainase", "Fasilitas Umum"
+    };
+
+    private static int jumlahLaporan = 0;
+
+    private String kode;
+    private String namaPelapor;
+    private String jenis;
+    private String lokasi;
+    private String deskripsi;
+    private String foto;
+    private String status;
+    private String keterangan;
+
+    public Laporan(String namaPelapor, String jenis, String lokasi, String deskripsi, String foto) {
+        jumlahLaporan++;
+        this.kode = String.format("LP-%03d", jumlahLaporan);
+        setNamaPelapor(namaPelapor);
+        this.jenis = jenis;
+        setLokasi(lokasi);
+        setDeskripsi(deskripsi);
+        this.foto = (foto == null || foto.trim().isEmpty()) ? "-" : foto.trim();
+        this.status = MENUNGGU;
+        this.keterangan = "";
+    }
+
+    public String getKode() {
+        return kode;
+    }
+
+    public String getNamaPelapor() {
+        return namaPelapor;
+    }
+
+    public String getJenis() {
+        return jenis;
+    }
+
+    public String getLokasi() {
+        return lokasi;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setNamaPelapor(String namaPelapor) {
+        if (namaPelapor == null || namaPelapor.trim().isEmpty()) {
+            throw new IllegalArgumentException("Nama pelapor tidak boleh kosong.");
+        }
+        this.namaPelapor = namaPelapor.trim();
+    }
+
+    public void setLokasi(String lokasi) {
+        if (lokasi == null || lokasi.trim().isEmpty()) {
+            throw new IllegalArgumentException("Lokasi tidak boleh kosong.");
+        }
+        this.lokasi = lokasi.trim();
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        if (deskripsi == null || deskripsi.trim().isEmpty()) {
+            throw new IllegalArgumentException("Deskripsi masalah tidak boleh kosong.");
+        }
+        this.deskripsi = deskripsi.trim();
+    }
+
+    public void terima(String keterangan) {
+        if (!status.equals(MENUNGGU)) {
+            throw new IllegalStateException("Hanya laporan berstatus '" + MENUNGGU + "' yang bisa diterima.");
+        }
+        status = DITANGANI;
+        this.keterangan = (keterangan == null) ? "" : keterangan.trim();
+    }
+
+    public void tolak(String alasan) {
+        if (!status.equals(MENUNGGU)) {
+            throw new IllegalStateException("Hanya laporan berstatus '" + MENUNGGU + "' yang bisa ditolak.");
+        }
+        if (alasan == null || alasan.trim().isEmpty()) {
+            throw new IllegalArgumentException("Alasan penolakan wajib diisi.");
+        }
+        status = DITOLAK;
+        keterangan = alasan.trim();
+    }
+
+    public void selesai(String keterangan) {
+        if (!status.equals(DITANGANI)) {
+            throw new IllegalStateException("Hanya laporan berstatus '" + DITANGANI + "' yang bisa diselesaikan.");
+        }
+        status = SELESAI;
+        if (keterangan != null && !keterangan.trim().isEmpty()) {
+            this.keterangan = keterangan.trim();
+        }
+    }
+
+    public void tampilkanInfo() {
+        System.out.println("Kode      : " + kode);
+        System.out.println("Pelapor   : " + namaPelapor);
+        System.out.println("Jenis     : " + jenis);
+        System.out.println("Lokasi    : " + lokasi);
+        System.out.println("Masalah   : " + deskripsi);
+        System.out.println("Foto      : " + foto);
+        System.out.println("Status    : " + status);
+        if (!keterangan.isEmpty()) {
+            System.out.println("Keterangan: " + keterangan);
+        }
+    }
+}
