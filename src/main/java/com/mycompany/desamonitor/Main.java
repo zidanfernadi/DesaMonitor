@@ -3,6 +3,10 @@ package com.mycompany.desamonitor;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * DesaMonitor - Sistem Informasi Geografis untuk pemantauan dan
+ * pelaporan kondisi infrastruktur desa (versi konsol).
+ */
 public class Main {
 
     private static Scanner input = new Scanner(System.in);
@@ -37,6 +41,9 @@ public class Main {
         input.close();
     }
 
+    // =====================================================
+    // MENU MASYARAKAT
+    // =====================================================
     private static void menuMasyarakat() {
         boolean kembali = false;
 
@@ -69,6 +76,7 @@ public class Main {
         }
     }
 
+    // Peta versi konsol: peta teks (posisi titik sesuai koordinat) dan daftar titik lokasi
     private static void tampilkanPeta() {
         ArrayList<Infrastruktur> daftar = sistem.getDaftarInfrastruktur();
         System.out.println("\n=== PETA INFRASTRUKTUR DESA ===");
@@ -87,6 +95,7 @@ public class Main {
             }
         }
 
+        // Mencari batas koordinat agar semua titik muat di dalam peta
         double minLat = daftar.get(0).getLatitude();
         double maxLat = minLat;
         double minLon = daftar.get(0).getLongitude();
@@ -104,7 +113,8 @@ public class Main {
             if (maxLon > minLon) {
                 k = (int) Math.round((inf.getLongitude() - minLon) / (maxLon - minLon) * (kolom - 1));
             }
-            if (maxLat > minLat) {               
+            if (maxLat > minLat) {
+                // Latitude makin besar = makin ke utara = baris makin atas
                 b = (int) Math.round((maxLat - inf.getLatitude()) / (maxLat - minLat) * (baris - 1));
             }
             if (grid[b][k] == '.') {
@@ -156,10 +166,8 @@ public class Main {
 
         String lokasi = bacaTeks("Lokasi kejadian");
         String deskripsi = bacaTeks("Deskripsi masalah");
-        System.out.print("Nama file foto (kosongkan jika tidak ada): ");
-        String foto = input.nextLine();
-
-        Laporan laporan = new Laporan(nama, jenis, lokasi, deskripsi, foto);
+        
+        Laporan laporan = new Laporan(nama, jenis, lokasi, deskripsi);
         sistem.tambahLaporan(laporan);
 
         System.out.println("\nLaporan berhasil dikirim dan menunggu pemeriksaan admin.");
@@ -179,6 +187,9 @@ public class Main {
         }
     }
 
+    // =====================================================
+    // MENU ADMIN
+    // =====================================================
     private static boolean loginAdmin() {
         System.out.println("\n--- LOGIN ADMIN ---");
         int percobaan = 0;
@@ -271,6 +282,8 @@ public class Main {
 
         try {
             Infrastruktur baru = null;
+
+            // Opsi kondisi dan data tambahan menyesuaikan jenis yang dipilih
             switch (jenis) {
                 case 1:
                     Jalan jalanBaru = new Jalan(id, nama, lokasi, lat, lon, "Sudah diaspal",
@@ -304,8 +317,6 @@ public class Main {
                     break;
             }
 
-            System.out.print("Nama file foto (kosongkan jika tidak ada): ");
-            baru.setFoto(input.nextLine());
 
             sistem.tambahInfrastruktur(baru);
             System.out.println("\nData infrastruktur berhasil ditambahkan dengan ID " + id + ".");
@@ -314,6 +325,7 @@ public class Main {
         }
     }
 
+    // Menampilkan opsi kondisi sesuai jenis infrastruktur, lalu mengembalikan pilihan
     private static String pilihKondisi(Infrastruktur inf) {
         String[] opsi = inf.getOpsiKondisi();
         System.out.println("Kondisi " + inf.getJenis() + ":");
@@ -340,7 +352,6 @@ public class Main {
         System.out.println("\nBagian yang diubah:");
         System.out.println("1. Nama");
         System.out.println("2. Lokasi");
-        System.out.println("3. Foto");
         System.out.println("0. Batal");
         int pilihan = bacaAngka("Pilih bagian", 0, 3);
 
@@ -354,11 +365,7 @@ public class Main {
                     inf.setLokasi(bacaTeks("Lokasi baru"));
                     System.out.println("Lokasi berhasil diubah.");
                     break;
-                case 3:
-                    System.out.print("Nama file foto baru (kosongkan untuk menghapus foto): ");
-                    inf.setFoto(input.nextLine());
-                    System.out.println("Foto berhasil diperbarui.");
-                    break;
+               
             }
         } catch (IllegalArgumentException e) {
             System.out.println("Data tidak valid: " + e.getMessage());
@@ -418,6 +425,7 @@ public class Main {
         System.out.println();
         laporan.tampilkanInfo();
 
+        // Opsi yang tampil menyesuaikan status laporan saat ini
         String status = laporan.getStatus();
         if (status.equals(Laporan.MENUNGGU)) {
             System.out.println("\n1. Terima laporan (ubah ke '" + Laporan.DITANGANI + "')");
@@ -449,6 +457,9 @@ public class Main {
         }
     }
 
+    // =====================================================
+    // METHOD BANTU INPUT (Scanner + try-catch)
+    // =====================================================
     private static int bacaAngka(String pesan, int min, int max) {
         while (true) {
             System.out.print(pesan + " [" + min + "-" + max + "]: ");

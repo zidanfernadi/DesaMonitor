@@ -2,6 +2,9 @@ package com.mycompany.desamonitor;
 
 import java.util.ArrayList;
 
+/**
+ * Menyimpan dan mengelola data infrastruktur dan laporan (ArrayList).
+ */
 public class SistemDesa {
 
     private ArrayList<Infrastruktur> daftarInfrastruktur = new ArrayList<>();
@@ -14,21 +17,24 @@ public class SistemDesa {
         isiDataAwal();
     }
 
+    // Data contoh agar aplikasi langsung punya isi saat dijalankan
     private void isiDataAwal() {
-        daftarInfrastruktur.add(new Jalan("INF-001", "Jalan Dusun I", "Dusun I", -5.3702, 105.2411, "Belum diaspal", 850));
-        daftarInfrastruktur.add(new Jalan("INF-002", "Jalan Raya Desa", "Dusun II", -5.3715, 105.2438, "Sudah diaspal", 1200));
-        daftarInfrastruktur.add(new LampuJalan("INF-003", "Lampu Simpang Tiga", "Simpang Tiga Dusun II", -5.3719, 105.2442, "Mati", 4));
+        daftarInfrastruktur.add(new Jalan("INF-001", "Jalan Gadingrejo Utara", "Gadingrejo", -5.3702, 105.2411, "Belum diaspal", 850));
+        daftarInfrastruktur.add(new Jalan("INF-002", "Jalan Raya Tegalsari", "Gadingrejo", -5.3715, 105.2438, "Sudah diaspal", 1200));
+        daftarInfrastruktur.add(new LampuJalan("INF-003", "Lampu Simpang Pasar", "Simpang Pasar", -5.3719, 105.2442, "Mati", 4));
         daftarInfrastruktur.add(new LampuJalan("INF-004", "Lampu Balai Desa", "Depan Balai Desa", -5.3708, 105.2425, "Berfungsi", 6));
-        daftarInfrastruktur.add(new Jembatan("INF-005", "Jembatan Sungai Kecil", "Batas Dusun I dan III", -5.3690, 105.2400, "Rusak ringan", "Beton"));
+        daftarInfrastruktur.add(new Jembatan("INF-005", "Jembatan Wetan Kali", "Wetan Kali", -5.3690, 105.2400, "Rusak ringan", "Beton"));
         daftarInfrastruktur.add(new Drainase("INF-006", "Drainase Jalan Mawar", "Dusun III", -5.3725, 105.2450, "Tersumbat", 300));
 
-        daftarInfrastruktur.add(new FasilitasUmum("INF-007", "Masjid Al-Ikhlas", "Dusun II", -5.3712, 105.2430, "Baik", "Masjid"));
-        daftarInfrastruktur.add(new FasilitasUmum("INF-008", "Lapangan Olahraga Desa", "Dusun III", -5.3722, 105.2418, "Rusak ringan", "Lapangan olahraga"));
+        daftarInfrastruktur.add(new FasilitasUmum("INF-007", "Masjid Al-Bakrie", "Tulungagung", -5.3712, 105.2430, "Baik", "Masjid"));
+        daftarInfrastruktur.add(new FasilitasUmum("INF-008", "Lapangan Padel", "Gadingrejo Pusat", -5.3722, 105.2418, "Baik", "Lapangan olahraga"));
 
-        daftarLaporan.add(new Laporan("Budi Santoso", "Lampu Jalan", "Simpang Tiga Dusun II",
-                "Lampu sudah mati sekitar dua minggu, jalan gelap saat malam.", ""));
+        // Satu laporan contoh agar menu admin bisa langsung dicoba
+        daftarLaporan.add(new Laporan("Sofye Mahatma", "Lampu Jalan", "Tikungan SMANDING",
+                "Lampu sudah mati sekitar dua minggu, jalan gelap saat malam."));
     }
 
+    // Admin ----------
     public boolean loginAdmin(String username, String password) {
         for (Admin admin : daftarAdmin) {
             if (admin.login(username, password)) {
@@ -38,6 +44,7 @@ public class SistemDesa {
         return false;
     }
 
+    // Infrastruktur
     public ArrayList<Infrastruktur> getDaftarInfrastruktur() {
         return daftarInfrastruktur;
     }
@@ -59,6 +66,7 @@ public class SistemDesa {
         return null;
     }
 
+    // Laporan
     public ArrayList<Laporan> getDaftarLaporan() {
         return daftarLaporan;
     }
