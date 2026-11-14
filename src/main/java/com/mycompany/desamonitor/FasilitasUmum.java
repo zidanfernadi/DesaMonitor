@@ -2,6 +2,7 @@ package com.mycompany.desamonitor;
 
 public class FasilitasUmum extends Infrastruktur {
 
+    // Contoh: Masjid, Lapangan olahraga, Balai desa, Posyandu
     private String jenisFasilitas;
 
     public FasilitasUmum(String id, String nama, String lokasi,
@@ -37,8 +38,7 @@ public class FasilitasUmum extends Infrastruktur {
     }
 
     @Override
-    public void tampilkanInfo() {
-        super.tampilkanInfo();
-        System.out.println("Fasilitas : " + jenisFasilitas);
+    public String getDetailTeks() {
+        return super.getDetailTeks() + "\n" + "Fasilitas : " + jenisFasilitas;
     }
 }

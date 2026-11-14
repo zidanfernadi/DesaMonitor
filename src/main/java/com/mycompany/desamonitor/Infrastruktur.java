@@ -1,5 +1,9 @@
 package com.mycompany.desamonitor;
 
+/**
+ * Superclass untuk semua jenis infrastruktur desa.
+ * Field dibuat private (Encapsulation), diakses lewat getter dan setter.
+ */
 public class Infrastruktur {
 
     private String id;
@@ -20,18 +24,22 @@ public class Infrastruktur {
         setKondisi(kondisi);
     }
 
+    // Jenis infrastruktur, akan di-override oleh subclass
     public String getJenis() {
         return "Infrastruktur";
     }
 
+    // Simbol untuk peta teks, akan di-override oleh subclass
     public char getSimbol() {
         return '?';
     }
 
+    // Pilihan kondisi yang valid, akan di-override oleh subclass
     public String[] getOpsiKondisi() {
         return new String[]{"Baik", "Rusak"};
     }
 
+    // Getter
     public String getId() {
         return id;
     }
@@ -60,6 +68,7 @@ public class Infrastruktur {
         return foto;
     }
 
+    // Setter dengan validasi
     public void setNama(String nama) {
         if (nama == null || nama.trim().isEmpty()) {
             throw new IllegalArgumentException("Nama infrastruktur tidak boleh kosong.");
@@ -89,6 +98,7 @@ public class Infrastruktur {
     }
 
     public void setKondisi(String kondisi) {
+        // Kondisi hanya boleh salah satu dari opsi milik jenis infrastrukturnya
         for (String opsi : getOpsiKondisi()) {
             if (opsi.equals(kondisi)) {
                 this.kondisi = kondisi;
@@ -98,6 +108,7 @@ public class Infrastruktur {
         throw new IllegalArgumentException("Kondisi '" + kondisi + "' tidak valid untuk " + getJenis() + ".");
     }
 
+    // Foto bersifat opsional, kosong berarti tidak ada foto
     public void setFoto(String foto) {
         if (foto == null || foto.trim().isEmpty()) {
             this.foto = "-";
@@ -106,13 +117,18 @@ public class Infrastruktur {
         }
     }
 
+    // Detail lengkap dalam bentuk teks (dipakai oleh konsol maupun GUI)
+    public String getDetailTeks() {
+        return "ID        : " + id
+                + "\nJenis     : " + getJenis()
+                + "\nNama      : " + nama
+                + "\nLokasi    : " + lokasi
+                + "\nKoordinat : " + latitude + ", " + longitude
+                + "\nKondisi   : " + kondisi
+                + "\nFoto      : " + foto;
+    }
+
     public void tampilkanInfo() {
-        System.out.println("ID        : " + id);
-        System.out.println("Jenis     : " + getJenis());
-        System.out.println("Nama      : " + nama);
-        System.out.println("Lokasi    : " + lokasi);
-        System.out.println("Koordinat : " + latitude + ", " + longitude);
-        System.out.println("Kondisi   : " + kondisi);
-        System.out.println("Foto      : " + foto);
+        System.out.println(getDetailTeks());
     }
 }

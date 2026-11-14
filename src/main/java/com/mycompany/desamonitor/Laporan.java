@@ -1,16 +1,24 @@
 package com.mycompany.desamonitor;
 
+/**
+ * Laporan kerusakan infrastruktur dari masyarakat.
+ * Status: Menunggu pemeriksaan -> Sedang ditangani -> Selesai
+ * atau Menunggu pemeriksaan -> Ditolak (dengan alasan).
+ */
 public class Laporan {
 
+    // Konstanta status (static final)
     public static final String MENUNGGU = "Menunggu pemeriksaan";
     public static final String DITANGANI = "Sedang ditangani";
     public static final String SELESAI = "Selesai";
     public static final String DITOLAK = "Ditolak";
 
+    // Pilihan jenis infrastruktur pada formulir laporan
     public static final String[] JENIS = {
         "Jalan", "Lampu Jalan", "Jembatan", "Drainase", "Fasilitas Umum"
     };
 
+    // Penghitung untuk membuat kode laporan otomatis
     private static int jumlahLaporan = 0;
 
     private String kode;
@@ -18,18 +26,16 @@ public class Laporan {
     private String jenis;
     private String lokasi;
     private String deskripsi;
-    private String foto;
     private String status;
     private String keterangan;
 
-    public Laporan(String namaPelapor, String jenis, String lokasi, String deskripsi, String foto) {
+    public Laporan(String namaPelapor, String jenis, String lokasi, String deskripsi) {
         jumlahLaporan++;
         this.kode = String.format("LP-%03d", jumlahLaporan);
         setNamaPelapor(namaPelapor);
         this.jenis = jenis;
         setLokasi(lokasi);
         setDeskripsi(deskripsi);
-        this.foto = (foto == null || foto.trim().isEmpty()) ? "-" : foto.trim();
         this.status = MENUNGGU;
         this.keterangan = "";
     }
@@ -52,10 +58,6 @@ public class Laporan {
 
     public String getDeskripsi() {
         return deskripsi;
-    }
-
-    public String getFoto() {
-        return foto;
     }
 
     public String getStatus() {
@@ -87,6 +89,7 @@ public class Laporan {
         this.deskripsi = deskripsi.trim();
     }
 
+    // Perubahan status hanya boleh mengikuti alur yang benar
     public void terima(String keterangan) {
         if (!status.equals(MENUNGGU)) {
             throw new IllegalStateException("Hanya laporan berstatus '" + MENUNGGU + "' yang bisa diterima.");
@@ -116,16 +119,20 @@ public class Laporan {
         }
     }
 
-    public void tampilkanInfo() {
-        System.out.println("Kode      : " + kode);
-        System.out.println("Pelapor   : " + namaPelapor);
-        System.out.println("Jenis     : " + jenis);
-        System.out.println("Lokasi    : " + lokasi);
-        System.out.println("Masalah   : " + deskripsi);
-        System.out.println("Foto      : " + foto);
-        System.out.println("Status    : " + status);
+    public String getDetailTeks() {
+        String teks = "Kode      : " + kode
+                + "\nPelapor   : " + namaPelapor
+                + "\nJenis     : " + jenis
+                + "\nLokasi    : " + lokasi
+                + "\nMasalah   : " + deskripsi
+                + "\nStatus    : " + status;
         if (!keterangan.isEmpty()) {
-            System.out.println("Keterangan: " + keterangan);
+            teks += "\nKeterangan: " + keterangan;
         }
+        return teks;
+    }
+
+    public void tampilkanInfo() {
+        System.out.println(getDetailTeks());
     }
 }

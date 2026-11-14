@@ -37,8 +37,7 @@ public class LampuJalan extends Infrastruktur {
     }
 
     @Override
-    public void tampilkanInfo() {
-        super.tampilkanInfo();
-        System.out.println("Jml Titik : " + jumlahTitik + " lampu");
+    public String getDetailTeks() {
+        return super.getDetailTeks() + "\n" + "Jml Titik : " + jumlahTitik + " lampu";
     }
 }

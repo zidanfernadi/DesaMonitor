@@ -37,8 +37,7 @@ public class Jalan extends Infrastruktur {
     }
 
     @Override
-    public void tampilkanInfo() {
-        super.tampilkanInfo();
-        System.out.println("Panjang   : " + panjangMeter + " meter");
+    public String getDetailTeks() {
+        return super.getDetailTeks() + "\n" + "Panjang   : " + panjangMeter + " meter";
     }
 }

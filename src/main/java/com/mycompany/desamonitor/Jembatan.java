@@ -37,8 +37,7 @@ public class Jembatan extends Infrastruktur {
     }
 
     @Override
-    public void tampilkanInfo() {
-        super.tampilkanInfo();
-        System.out.println("Bahan     : " + bahan);
+    public String getDetailTeks() {
+        return super.getDetailTeks() + "\n" + "Bahan     : " + bahan;
     }
 }
